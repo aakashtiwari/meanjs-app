@@ -2,15 +2,14 @@
   'use strict';
 
   angular
-    .module('articles')
-    .controller('ArticlesController', ArticlesController);
+    .module('comments')
+    .controller('CommentsController', CommentsController);
 
-  ArticlesController.$inject = ['$scope', '$state', 'articleResolve', '$window', 'Authentication'];
+  CommentsController.$inject = ['$scope', '$state', '$window', 'Authentication'];
 
-  function ArticlesController($scope, $state, article, comment, $window, Authentication) {
+  function CommentsController($scope, $state, comment, $window, Authentication) {
     var vm = this;
 
-    vm.article = article;
     vm.comment = comment;
     vm.authentication = Authentication;
     vm.error = null;
@@ -18,25 +17,25 @@
     vm.remove = remove;
     vm.save = save;
 
-    // Remove existing Article
+    // Remove existing Comment
     function remove() {
       if ($window.confirm('Are you sure you want to delete?')) {
-        vm.article.$remove($state.go('articles.list'));
+        vm.comment.$remove($state.go('comments.list'));
       }
     }
 
-    // Save Article
+    // Save Comment
     function save(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.articleForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.form.commentForm');
         return false;
       }
 
       // TODO: move create/update logic to service
-      if (vm.article._id) {
-        vm.article.$update(successCallback, errorCallback);
+      if (vm.comment._id) {
+        vm.comment.$update(successCallback, errorCallback);
       } else {
-        vm.article.$save(successCallback, errorCallback);
+        vm.comment.$save(successCallback, errorCallback);
       }
 
       function successCallback(res) {
