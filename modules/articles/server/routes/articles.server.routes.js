@@ -4,7 +4,8 @@
  * Module dependencies
  */
 var articlesPolicy = require('../policies/articles.server.policy'),
-  articles = require('../controllers/articles.server.controller');
+  articles = require('../controllers/articles.server.controller'),
+  comments = require('../controllers/comments.server.controller');
 
 module.exports = function (app) {
   // Articles collection routes
@@ -17,6 +18,13 @@ module.exports = function (app) {
     .get(articles.read)
     .put(articles.update)
     .delete(articles.delete);
+
+  app.route('/api/articles/:articleId/comments')
+    .post(comments.commentCreate);
+
+  // Single comment routes
+  app.route('/api/articles/:articleId/comments/:id')
+    .delete(comments.commentDelete);
 
   // Finish by binding the article middleware
   app.param('articleId', articles.articleByID);

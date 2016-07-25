@@ -7,6 +7,20 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
+  *Comment Schema
+  */
+var CommentSchema = new mongoose.Schema({
+  content: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  }
+});
+/**
  * Article Schema
  */
 var ArticleSchema = new Schema({
@@ -28,7 +42,8 @@ var ArticleSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
-  }
+  },
+  comments: [CommentSchema]
 });
-
+mongoose.model('Comment', CommentSchema);
 mongoose.model('Article', ArticleSchema);

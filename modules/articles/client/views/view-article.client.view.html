@@ -20,22 +20,26 @@
     </em>
   </small>
   <p class="lead" ng-bind="vm.article.content"></p>
-  <p class="lead" ng-repeat="Comment in vm.comments"></p>
-  <form name="vm.form.commentForm" class="form-horizontal" ng-submit="vm.save(vm.form.commentForm.$valid)" novalidate>
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label class="control-label" for="title">Comments</label>
-          <input name="comment" type="text" ng-model="vm.comment.content" id="comment" class="form-control" placeholder="Comment" required>
-          <div ng-messages="vm.form.commentForm.title.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Comment is required.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.article.comment._id ? 'Edit' : 'Comment'}}</button>
-        </div>
-        <div ng-show="vm.error" class="text-danger">
-          <strong ng-bind="vm.error"></strong>
-        </div>
-      </fieldset>
-    </form>
+  <div ng-repeat="comment in vm.article.comments" class="lead comment-display">
+    <p class="list-group-item-text comments" ng-bind="comment.content"></p>
+    <div class="pull-right" ng-show="vm.showOptions(comment.user)">
+      <a class="btn btn-primary" ui-sref="articles.edit({ articleId: vm.article._id })">
+        <i class="glyphicon glyphicon-edit"></i>
+      </a>
+      <a class="btn btn-primary" ng-click="vm.removeComment(comment._id)">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
+    </div>
+  </div>
+  <form name="vm.form.commentForm" class="form-horizontal" ng-submit="vm.saveComment()" novalidate>
+    <fieldset>
+      <div class="form-group">
+        <label class="control-label" for="content">Comments</label>
+        <textarea name="content" data-ng-model="vm.comment.content" id="content" class="form-control" cols="30" rows="2" placeholder="Comment"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-default">{{vm.article.comment._id ? 'Edit' : 'Comment'}}</button>
+      </div>
+    </fieldset>
+  </form>
 </section>

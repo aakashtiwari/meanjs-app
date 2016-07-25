@@ -1,19 +1,22 @@
-(function () {
+(function() {
   'use strict';
-
   angular
-    .module('comments.services')
-    .factory('CommentService', CommentsService);
+    .module('articles.services')
+    .service('commentdata', commentdata);
 
-  CommentsService.$inject = ['$resource'];
+  commentdata.$inject = ['$http'];
+  function commentdata($http) {
+    var addCommentById = function(articleid, data) {
+      return $http.post('/api/articles/' + articleid + '/comments', data);
+    };
+    var removeCommentById = function(articleid, id) {
+      return $http.delete('/api/articles/' + articleid + '/comments/' + id, id);
+    };
 
-  function CommentsService($resource) {
-    return $resource('api/comments/:commentId', {
-      commentId: '@_id'
-    }, {
-      update: {
-        method: 'PUT'
-      }
-    });
+    return {
+      addCommentById: addCommentById,
+      removeCommentById: removeCommentById
+    };
   }
+
 }());
